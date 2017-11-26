@@ -1,0 +1,32 @@
+{
+  "name": "token-lock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leverj/token-lock.git"
+  },
+  "author": "leverj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leverj/token-lock/issues"
+  },
+  "homepage": "https://github.com/leverj/token-lock#readme",
+  "dependencies": {
+    "web3": "^1.0.0-beta.26"
+  },
+  "devDependencies": {
+    "bip39": "^2.4.0",
+    "ethereumjs-testrpc": "^6.0.3",
+    "ethereumjs-wallet": "^0.6.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^4.0.1"
+  }
+}
