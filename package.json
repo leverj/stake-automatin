@@ -26,6 +26,8 @@
     "bip39": "^2.4.0",
     "ethereumjs-testrpc": "^6.0.3",
     "ethereumjs-wallet": "^0.6.0",
+    "ethjs-provider-http": "^0.1.6",
+    "ethjs-rpc": "^0.1.7",
     "expect.js": "^0.3.1",
     "mocha": "^4.0.1"
   }
