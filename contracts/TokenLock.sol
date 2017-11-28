@@ -39,7 +39,7 @@ contract TokenLock {
     _;
   }
 
-  function TokenLock(address _owner, uint _shortLock, uint _longLock, uint _shortShare){
+  function TokenLock(address _owner, uint _shortLock, uint _longLock, uint _shortShare) public {
     require(_owner != 0);
     require(_longLock > _shortLock);
     require(_shortLock > 0);

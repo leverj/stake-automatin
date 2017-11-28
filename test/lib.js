@@ -4,6 +4,7 @@ const EthRPC = require('ethjs-rpc');
 
 module.exports = (function () {
   let lib = {};
+	let snapshotid;
   lib.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
   lib.ethRPC = new EthRPC(new HttpProvider('http://localhost:8545'));
   lib.deploy = async function (abi, bytecode, user, arguments) {
@@ -45,6 +46,14 @@ module.exports = (function () {
 		return new Promise((resolve, reject) => {
 			setTimeout(resolve, time)
 		})
+	}
+
+	lib.reset = async function (){
+	  await lib.ethRPC.sendAsync({method:'evm_revert', params:[snapshotid]});
+	}
+
+	lib.snapshot = async function (){
+	  snapshotid = await lib.ethRPC.sendAsync({method:'evm_snapshot'});
 	}
 
   return lib;

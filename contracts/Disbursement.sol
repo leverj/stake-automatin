@@ -75,8 +75,6 @@ contract Disbursement {
         token = _token;
     }
 
-    event LogWithdraw(address to, uint256 value, uint256 maxTokens);
-
     /// @dev Transfers tokens to a given address
     /// @param _to Address of token receiver
     /// @param _value Number of tokens to transfer
@@ -86,11 +84,10 @@ contract Disbursement {
         isSetUp
     {
         uint maxTokens = calcMaxWithdraw();
-        LogWithdraw(_to, _value, maxTokens);
-        //if (_value > maxTokens)
-        //    revert();
-        //withdrawnTokens = SafeMath.add(withdrawnTokens, _value);
-        //token.transfer(_to, _value);
+        if (_value > maxTokens)
+            revert();
+        withdrawnTokens = SafeMath.add(withdrawnTokens, _value);
+        token.transfer(_to, _value);
     }
 
     /// @dev Calculates the maximum amount of vested tokens
