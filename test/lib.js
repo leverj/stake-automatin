@@ -41,5 +41,11 @@ module.exports = (function () {
     await lib.mine(1);
   };
 
+	lib.delay = function (time) {
+		return new Promise((resolve, reject) => {
+			setTimeout(resolve, time)
+		})
+	}
+
   return lib;
 })();

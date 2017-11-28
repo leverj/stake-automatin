@@ -3,7 +3,7 @@ pragma solidity ^0.4.11;
 
 import "./Disbursement.sol";
 import "./SafeMath.sol";
-import "./HumanStandardToken.sol";
+import "./Token.sol";
 
 /**
 this contract should be the address for disbursement contract.
@@ -21,7 +21,7 @@ contract TokenLock {
 
   uint public shortShare;
 
-  address public levAddress = 0x0f4ca92660efad97a9a70cb0fe969c755439772c;
+  address public levAddress;
 
   address public disbursement;
 
@@ -49,15 +49,11 @@ contract TokenLock {
     shortShare = _shortShare;
   }
 
-  function setDisbursement(address _disbursement) public onlyOwner {
+  function setup(address _disbursement, address _levToken) public onlyOwner {
     require(_disbursement != address(0));
+    require(_levToken != address(0));
     disbursement = _disbursement;
-  }
-
-  // To move the tokens from the Disbursement contract to this one
-  function withdraw() public {
-    uint256 amount = Disbursement(disbursement).calcMaxWithdraw();
-    Disbursement(disbursement).withdraw(address(this), amount);
+    levAddress = _levToken;
   }
 
   function changeOwner(address _owner) public onlyOwner validAddress(_owner) {
@@ -72,11 +68,11 @@ contract TokenLock {
     isShortSent = true;
 
     // 1. Get how many tokens this contract has with a token instance and check this token balance
-    uint256 tokenBalance = HumanStandardToken(levAddress).balanceOf(this);
+    uint256 tokenBalance = Token(levAddress).balanceOf(disbursement);
     uint256 amountToSend = tokenBalance.mul(shortShare).div(100);
 
     // 2. Transfer those tokens with the _shortShare percentage
-    HumanStandardToken(levAddress).transfer(_wallet, amountToSend);
+    Disbursement(disbursement).withdraw(_wallet, amountToSend);
   }
 
   function transferLongTermTokens(address _wallet) public onlyOwner {
@@ -87,9 +83,9 @@ contract TokenLock {
     isLongSent = true;
 
     // 1. Get how many tokens this contract has with a token instance and check this token balance
-    uint256 tokenBalance = HumanStandardToken(levAddress).balanceOf(this);
+    uint256 tokenBalance = Token(levAddress).balanceOf(disbursement);
 
     // 2. Transfer those tokens with the _shortShare percentage
-    HumanStandardToken(levAddress).transfer(_wallet, tokenBalance);
+    Disbursement(disbursement).withdraw(_wallet, tokenBalance);
   }
 }
