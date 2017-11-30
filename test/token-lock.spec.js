@@ -69,7 +69,7 @@ contract('token-lock', function (accounts) {
 			expect(finalOwnerBalance.toNumber()).to.eql(0);
 		}
   });
-  it('should not be able to disburse rest of the tokens after 10 years', async function () {
+  it('should be able to disburse rest of the tokens after 10 years', async function () {
 		let ownerBalance = await token.balanceOf(owner);
 
 		// Send the token to disbursement

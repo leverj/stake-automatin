@@ -27,8 +27,6 @@ contract TokenLock is Owned{
 
   bool public isShortSent = false;
 
-  bool public isLongSent = false;
-
   modifier validAddress(address _address){
     require(_address != 0);
     _;
@@ -68,9 +66,6 @@ contract TokenLock is Owned{
   function transferLongTermTokens(address _wallet) public onlyOwner {
     require(_wallet != address(0));
     require(now > longLock);
-    require(!isLongSent);
-
-    isLongSent = true;
 
     // 1. Get how many tokens this contract has with a token instance and check this token balance
     uint256 tokenBalance = Token(levAddress).balanceOf(disbursement);
