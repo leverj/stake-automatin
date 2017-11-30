@@ -4,6 +4,5 @@ machine:
 
 test:
   override:
-    - testrpc
+    - nohup testrpc &
     - truffle test
-
