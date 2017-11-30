@@ -5,4 +5,5 @@ machine:
 test:
   override:
     - nohup testrpc &
+    - npm install truffle@4.0.1
     - truffle test
