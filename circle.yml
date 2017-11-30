@@ -1,9 +1,3 @@
 machine:
   node:
     version: 8.9.1
-
-test:
-  override:
-    - nohup testrpc &
-    - npm install truffle@4.0.1
-    - truffle test
