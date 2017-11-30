@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/leverj/token-lock#readme",
   "dependencies": {
+    "request": "2.83.0",
+    "request-promise": "4.2.2",
     "web3": "^1.0.0-beta.26"
   },
   "devDependencies": {
