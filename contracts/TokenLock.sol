@@ -4,6 +4,7 @@ pragma solidity ^0.4.11;
 import "./Disbursement.sol";
 import "./SafeMath.sol";
 import "./Token.sol";
+import "./Owned.sol";
 
 /**
 this contract should be the address for disbursement contract.
@@ -11,9 +12,8 @@ It should not allow to disburse any token for a given time "initialLockTime"
 lock "50%" of tokens for 10 years.
 transfer 50% of tokens to a given address.
 */
-contract TokenLock {
+contract TokenLock is Owned{
   using SafeMath for uint;
-  address public owner;
 
   uint public shortLock;
 
@@ -29,21 +29,15 @@ contract TokenLock {
 
   bool public isLongSent = false;
 
-  modifier onlyOwner{
-    require(msg.sender == owner);
-    _;
-  }
-
   modifier validAddress(address _address){
     require(_address != 0);
     _;
   }
 
-  function TokenLock(address _owner, uint _shortLock, uint _longLock, uint _shortShare) public {
-    require(_owner != 0);
+  function TokenLock(address[] _owners, uint _shortLock, uint _longLock, uint _shortShare) public {
     require(_longLock > _shortLock);
     require(_shortLock > 0);
-    owner = _owner;
+    setOwners(_owners);
     shortLock = block.timestamp.add(_shortLock);
     longLock = block.timestamp.add(_longLock);
     shortShare = _shortShare;
@@ -54,10 +48,6 @@ contract TokenLock {
     require(_levToken != address(0));
     disbursement = _disbursement;
     levAddress = _levToken;
-  }
-
-  function changeOwner(address _owner) public onlyOwner validAddress(_owner) {
-    owner = _owner;
   }
 
   function transferShortTermTokens(address _wallet) public onlyOwner {
