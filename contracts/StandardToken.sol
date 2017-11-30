@@ -16,13 +16,14 @@ contract StandardToken is Token {
     function transfer(address _to, uint256 _value)
         public
         validTransfer
-       	returns (bool success) 
+       	returns (bool success)
     {
         //Default assumes totalSupply can't be over max (2^256 - 1).
         //If your token leaves out totalSupply and can issue more tokens as time goes on, you need to check if it doesn't wrap.
         //Replace the if with this one instead.
-        //require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]);
-    	require(balances[msg.sender] >= _value);
+        require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to]);
+        require(balances[msg.sender] >= _value);
+
         balances[msg.sender] = SafeMath.sub(balances[msg.sender], _value);
         balances[_to] = SafeMath.add(balances[_to],_value);
         Transfer(msg.sender, _to, _value);
@@ -66,5 +67,5 @@ contract StandardToken is Token {
     {
         require(msg.sender == sale || transfersAllowed);
         _;
-    }   
+    }
 }
