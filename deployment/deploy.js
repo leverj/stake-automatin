@@ -73,31 +73,6 @@ async function startAutomation() {
 		console.log('Done');
 	}
 
-	async function deployContracts() {
-		let updateConfiguration = false;
-
-		if(configuration.tokenLockAddress === 'undefined') {
-			console.log('Deploying the token lock contract...')
-			const tokenLockContract = await deploy(tokenLockJson.abi, tokenLockJson.bytecode, addDeployerToAdmin(configuration.tokenLock.parameters.values));
-			configuration.tokenLockAddress = tokenLockContract.contractAddress;
-			tokenLock = new web3.eth.Contract(tokenLockJson.abi, tokenLockContract.contractAddress, sendOptions);
-			updateConfiguration = true;
-		} else {
-			// Create the instance of the contract with configuration.feeAddress
-			tokenLock = new web3.eth.Contract(tokenLockJson.abi, configuration.tokenLockAddress, sendOptions);
-		}
-
-		tokenLock.options.from = deployer.address
-
-		if(updateConfiguration) fs.writeFileSync(path.join(__dirname, 'configuration.json'), JSON.stringify(configuration));
-
-		console.log('Setting up the disbursement address and the token address in TokenLock.sol...');
-		await tokenLock.methods.setup(configuration.disbursementAddress, configuration.tokenAddress).send({from: deployer.address, gas: 4e6});
-		console.log('Removing the admin deployer from TokenLock.sol...');
-		await tokenLock.methods.removeOwner(deployer.address).send({from: deployer.address, gas: 4e6});
-		console.log('Done');
-	}
-
 	function addDeployerToAdmin(values){
 		let valuesCopy = _.cloneDeep(values)
 		valuesCopy[0].push(deployer.address);
@@ -114,3 +89,5 @@ async function startAutomation() {
 }
 
 startAutomation().catch(console.error);
+
+module.exports = startAutomation;

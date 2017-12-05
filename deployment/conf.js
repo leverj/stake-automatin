@@ -2,6 +2,15 @@ const fs = require('fs');
 const affirm = require('affirm.js');
 let configuration;
 
+if(!process.argv[2]) {
+	console.error('You must specify the function to call');
+	process.exit(0);
+}
+if(!process.argv[3]) {
+	console.error('You must pass the private key json file location');
+	process.exit(0);
+}
+
 // Select the right configuration json
 if(process.env.NODE_ENV === 'testnet') configuration = require('./testnet.json');
 else if(process.env.NODE_ENV === 'livenet') configuration = require('./livenet.json');
