@@ -15,13 +15,13 @@
           "0xD8ada5c29785F5e486bba48Bd196B103D58BBCa5",
           "0x7461CCF1FD55c069ce13E07D163C65c78c8b48D1"
         ],
-        "31536000",
-        "315360000",
+        "900",
+        "1800",
         "50"
       ]
     }
   },
-  "tokenLockAddress": "0x01351Bc82A55aBe1959b79C324498e021a6E9aa3",
-  "disbursementAddress": "0x0355bdc89d69baa43acb0e07af06750073ab8536",
-  "tokenAddress": "0x35c132805a90b8def2feccc456dcd113cb6ffa7e"
+  "tokenLockAddress": null,
+  "disbursementAddress": null,
+  "tokenAddress": "0xaa7127e250e87476fdd253f15e86a4ea9c4c4bd4"
 }
