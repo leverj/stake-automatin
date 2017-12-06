@@ -7,11 +7,13 @@ const affirm = require('affirm.js');
 const web3 = new Web3(new Web3.providers.HttpProvider(configuration.network));
 const tokenLockJson = require('./../build/contracts/TokenLock.json');
 const disbursementJson = require('./../build/contracts/Disbursement.json');
-const _ = require('lodash')
+const _ = require('lodash');
 let tokenLock;
 let disbursement;
 let deployer;
 let sendOptions;
+let env = process.env.NODE_ENV || 'develop';
+let configurationFile = `./${env}.json`;
 
 async function startAutomation() {
   let actions = {
@@ -53,7 +55,7 @@ async function startAutomation() {
     tokenLock.options.from = deployer.address;
     console.log('token lock address...', configuration.tokenLockAddress);
     console.log('Writing changes in the configuration file...');
-    fs.writeFileSync(path.join(__dirname, 'configuration.json'), JSON.stringify(configuration));
+    fs.writeFileSync(path.join(__dirname, configurationFile), JSON.stringify(configuration));
     console.log('Done');
     return configuration.tokenLockAddress;
   }
@@ -71,7 +73,7 @@ async function startAutomation() {
     disbursement.options.from = deployer.address;
     console.log('disbursement address', configuration.disbursementAddress);
     console.log('Writing changes in the configuration file...');
-    fs.writeFileSync(path.join(__dirname, 'configuration.json'), JSON.stringify(configuration));
+    fs.writeFileSync(path.join(__dirname, configurationFile), JSON.stringify(configuration));
     console.log('Setting up the lev token address from the configuration in the contract...');
     await disbursement.methods.setup(configuration.tokenAddress).send({from: deployer.address, gas: 4e6});
     console.log('Done');

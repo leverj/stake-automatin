@@ -3,6 +3,7 @@ let lib = require('./lib');
 let Token = artifacts.require("./HumanStandardToken.sol");
 let Disbursement = artifacts.require("./Disbursement.sol");
 let TokenLock = artifacts.require("./TokenLock.sol");
+const exec = require('child_process').exec;
 
 contract('token-lock', function (accounts) {
   let owner, token, tokenLock, disbursement;
@@ -45,7 +46,6 @@ contract('token-lock', function (accounts) {
     expect(await balance(token, owner)).to.eql(totalTokens * 0.4);
   });
 
-
   it('should not be able to disburse more than 40% of tokens after 1 year', async function () {
     await lib.forceTime(oneYear + 1);
     await tokenLock.transferShortTermTokens(owner, {from: owner});
@@ -87,6 +87,52 @@ contract('token-lock', function (accounts) {
     // Check owner balance
     expect(await balance(token, owner)).to.eql(totalTokens);
   })
+
+	it('should not execute the deploy functions without the private key file', async function () {
+		exec('node ./deployment/deploy.js tokenlock', (err, sout, serr) => {
+			expect(serr).to.eql('You must provide the location of the private key file\n');
+		});
+	});
+
+	it('should not execute the deploy functions without the function to call', async function () {
+		exec('node ./deployment/deploy.js C:\\Users\\merunas\\Desktop\\privatekeys\\admin.json', (err, sout, serr) => {
+			expect(serr).to.eql('You must provide the location of the private key file\n');
+		});
+	});
+
+	it('should not execute the deploy functions without the function to call and the private key file', async function () {
+		exec('node ./deployment/deploy.js', (err, sout, serr) => {
+			expect(serr).to.eql('You must provide the location of the private key file\n');
+		});
+	});
+
+	// TODO not working: "replacement transaction underpriced"
+	it('should execute the deploy tokenlock function without errors', async function () {
+		console.log('Processing tokenlock deployment...');
+		exec('node ./deployment/deploy.js tokenlock C:\\Users\\merunas\\Desktop\\privatekeys\\admin.json', (err, sout, serr) => {
+			expect(serr.length).to.eql(0);
+			expect(err.length).to.be(0);
+			expect(sout).to.not.be(undefined);
+		});
+	});
+
+	it('should execute the deploy of disbursement without errors', async function () {
+		console.log('Processing disbursement deployment...');
+		exec('node ./deployment/deploy.js disbursement C:\\Users\\merunas\\Desktop\\privatekeys\\admin.json', (err, sout, serr) => {
+			expect(serr.length).to.eql(0);
+			expect(err.length).to.be(0);
+			expect(sout).to.not.be(undefined);
+		});
+	});
+
+	it('should execute the deploy of setup without errors', async function () {
+		console.log('Processing setup deployment...');
+		exec('node ./deployment/deploy.js setup C:\\Users\\merunas\\Desktop\\privatekeys\\admin.json', (err, sout, serr) => {
+			expect(serr.length).to.eql(0);
+			expect(err.length).to.be(0);
+			expect(sout).to.not.be(undefined);
+		});
+	});
 });
 
 async function balance(_token, _address){
