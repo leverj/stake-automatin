@@ -1,0 +1,14 @@
+arguments
+
+NODE_ENV=testnet develop livenet
+
+node deploy.js tokenlock privatekeyfile
+	deploy tokenLock contract
+ 	remove owner
+
+node deploy.js disbursement privatekeyfile
+	deploy disbusrment with tokenlock
+	disbursement.setup(lev)
+
+node deploy.js setup privatekeyfile
+	tokenlock.setup(disbursement, lev)

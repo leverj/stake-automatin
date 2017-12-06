@@ -1,0 +1,27 @@
+{
+  "network": "https://ropsten.infura.io/5Ik2NwtzUQsXpL5nAvXW",
+  "tokenLock": {
+    "name": "TokenLock.sol:TokenLock",
+    "parameters": {
+      "types": [
+        "address[]",
+        "uint256",
+        "uint256",
+        "uint256"
+      ],
+      "values": [
+        [
+          "0x833a2FA19349dAf085B94376ac3042197cF66443",
+          "0xD8ada5c29785F5e486bba48Bd196B103D58BBCa5",
+          "0x7461CCF1FD55c069ce13E07D163C65c78c8b48D1"
+        ],
+        "900",
+        "1800",
+        "50"
+      ]
+    }
+  },
+  "tokenLockAddress": null,
+  "disbursementAddress": null,
+  "tokenAddress": "0xaa7127e250e87476fdd253f15e86a4ea9c4c4bd4"
+}
